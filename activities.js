@@ -1,6 +1,6 @@
 function getAuthorizationUrl() {
     const clientId = 'a9746a36a69f8f9'; // Your Client ID
-    const redirectUri = 'http://localhost/callback'; // Your redirect URI
+    const redirectUri = 'https://achievement.ekbal.site/activities'; // Your redirect URI
     const state = 'random_state'; // Random string for CSRF protection
   
     const url = `https://api.imgur.com/oauth2/authorize?client_id=${clientId}&response_type=code&state=${state}&redirect_uri=${redirectUri}`;
@@ -9,7 +9,7 @@ function getAuthorizationUrl() {
   function exchangeCodeForToken(code) {
     const clientId = 'a9746a36a69f8f9'; // Your Client ID
     const clientSecret = '1d63430cfa8494cc2a66851935ff0a9fb2057f28'; // Your Client Secret
-    const redirectUri = 'http://localhost/callback'; // Your redirect URI
+    const redirectUri = 'https://achievement.ekbal.site/activities'; // Your redirect URI
   
     const data = new URLSearchParams();
     data.append('client_id', clientId);
