@@ -7,17 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="scroll.css">
     <title>Activities - Ekbal School</title>
-    <script>
-        // Redirect to Imgur authorization if no code parameter exists
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (!urlParams.get('code')) {
-                const clientId = 'f4f7609452665ab';
-                const redirectUri = 'https://achievement.ekbal.site/activities';
-                window.location.href = `https://api.imgur.com/oauth2/authorize?client_id=${clientId}&response_type=code&state=imgur_gallery&redirect_uri=${redirectUri}`;
-            }
-        }
-    </script>
     <style>
         /* Reset CSS */
         * {
