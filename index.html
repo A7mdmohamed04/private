@@ -1,14 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Photo Gallery</title>
+    <title>Auto Photo Display</title>
 </head>
 <body>
-    <h1>Welcome to My Photo Gallery</h1>
-    <div id="gallery">
-        <!-- Images will be added here -->
-    </div>
+    <h1>Gallery</h1>
+    <div id="gallery"></div>
+
+    <script>
+    fetch('https://api.github.com/repos/A7mdmohamed07/private/contents/images')
+        .then(response => response.json())
+        .then(data => {
+            const gallery = document.getElementById('gallery');
+            data.forEach(file => {
+                if (file.type === 'file') {
+                    const img = document.createElement('img');
+                    img.src = `https://raw.githubusercontent.com/A7mdmohamed07/private/main/images/${file.name}`;
+                    img.style.width = '300px';  // Adjust size
+                    img.style.margin = '10px';  // Add spacing between images
+                    gallery.appendChild(img);
+                }
+            });
+        })
+        .catch(error => console.log(error));
+    </script>
 </body>
 </html>
