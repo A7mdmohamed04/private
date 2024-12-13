@@ -8,11 +8,15 @@ async function fetchImgurAlbum() {
     try {
         const response = await fetch(`https://api.imgur.com/3/album/${albumHash}/images`, {
             headers: {
-                'Authorization': `Client-ID ${clientId}`
+                'Authorization': `Client-ID ${clientId}`,
+                'Accept': 'application/json'
             }
         });
 
         if (!response.ok) {
+            if (response.status === 401) {
+                throw new Error('Authentication failed. Please check the client ID.');
+            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -65,7 +69,9 @@ async function fetchImgurAlbum() {
             <div class="error">
                 ${error.message === 'No images found' 
                     ? 'No images found in this album.'
-                    : 'Error loading images. Please try again later.'}
+                    : error.message === 'Authentication failed. Please check the client ID.'
+                        ? 'Authentication failed. Please check the API credentials.'
+                        : 'Error loading images. Please try again later.'}
             </div>`;
     }
 }
