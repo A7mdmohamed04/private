@@ -368,6 +368,11 @@
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
 
+        // Redirect to Imgur auth if no code present
+        if (!code) {
+            window.location.href = `https://api.imgur.com/oauth2/authorize?client_id=${clientId}&response_type=code&state=imgur_gallery`;
+        }
+
         async function refreshAccessToken(refreshToken) {
             try {
                 const response = await fetch('https://api.imgur.com/oauth2/token', {
@@ -390,6 +395,10 @@
                 const data = await response.json();
                 localStorage.setItem('access_token', data.access_token);
                 localStorage.setItem('refresh_token', data.refresh_token);
+
+                // Update URL with new token
+                const newUrl = `${window.location.origin}${window.location.pathname}?state=imgur_gallery&code=${data.access_token}`;
+                window.history.pushState({}, '', newUrl);
 
                 return data.access_token;
             } catch (error) {
@@ -433,6 +442,11 @@
                 localStorage.setItem('access_token', data.access_token);
                 localStorage.setItem('refresh_token', data.refresh_token);
                 startTokenRefreshTimer(data.expires_in, data.refresh_token);
+
+                // Update URL with access token
+                const newUrl = `${window.location.origin}${window.location.pathname}?state=imgur_gallery&code=${data.access_token}`;
+                window.history.pushState({}, '', newUrl);
+
                 return data.access_token;
             } catch (error) {
                 console.error('Error getting access token:', error);
