@@ -65,6 +65,12 @@ function getAuthorizationUrl() {
       });
   
       if (!response.ok) {
+        if (response.status === 401) {
+          // Token expired, try refreshing
+          await refreshAccessToken();
+          // Retry upload with new token
+          return await uploadImageToImgur(imageFile);
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
   
