@@ -1,0 +1,72 @@
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 12px; /* Increased width for better visibility on laptops */
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-color);
+    border-radius: 6px; /* Slightly increased border-radius */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #808080;
+    border-radius: 6px; /* Slightly increased border-radius */
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* Smooth Scroll Behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Scroll Navigation Buttons */
+.scroll-btn {
+    position: fixed;
+    right: 20px;
+    background: #808080;
+    color: var(--dark-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.scroll-top::before {
+    content: '↑'; /* Added arrow for scroll-top */
+    color: #ffffff; /* Set arrow color to white */
+    font-size: 24px; /* Increased font size for better visibility */
+}
+
+.scroll-bottom::before {
+    content: '↓'; /* Added arrow for scroll-bottom */
+    color: #ffffff; /* Set arrow color to white */
+    font-size: 24px; /* Increased font size for better visibility */
+}
+
+.scroll-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-3px);
+}
+
+/* Navbar Scroll Effect */
+.navbar {
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: rgba(211, 211, 211, 0.95);
+    padding: 1rem 5%;
+    box-shadow: 0 2px 10px rgba(211, 211, 211, 0.1);
+}
