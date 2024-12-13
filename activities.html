@@ -1,37 +1,194 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Imgur Gallery</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Activities - Ekbal School</title>
     <style>
-        body {
-            background-color: #f0f2f5;
-            font-family: Arial, sans-serif;
+        /* Reset CSS */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: Oswald;
+        }
+
+        /* Custom Fonts */
+      
+        :root {
+            --primary-color: #003470;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #fff;
+            --dark-color: #003470;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        body {
+            font-family: 'Oswald', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-color: #f0f2f5;
             color: #1c1e21;
+            padding-top: 80px; /* Add padding to account for fixed navbar */
         }
-        .header {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 8px 0;
+
+        .navbar {
+            padding: 1.6rem 5%;
             position: fixed;
-            top: 0;
             width: 100%;
-            z-index: 100;
+            z-index: 1000;
+            transition: 0.3s;
+            background: var(--primary-color);
+            font-family: 'Oswald', sans-serif;
+            top: 0;
         }
-        .header-content {
-            max-width: 1000px;
-            margin: 0 auto;
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .logo {
+            color: var(--light-color);
+            font-size: 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 2px;
+            font-size: 0;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            order: 2;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .department-text {
+            color: #808080;
+            font-size: 0.8rem;
+            margin-top: -5px;
+            margin-left: 0px;
+            display: none;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            margin-right: 3rem;
+            order: 1;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .nav-links a {
+            color: var(--light-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-family: Oswald;
+        }
+
+        .menu-btn {
+            display: none;
+            color: var(--light-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-btn .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--light-color);
+            transition: 0.3s;
+        }
+
+        .mobile-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--primary-color);
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-menu.active {
+            max-height: 300px;
+            padding: 1rem 0;
+        }
+
+        .mobile-menu a {
+            display: block;
+            color: var(--light-color);
+            text-decoration: none;
+            padding: 0.5rem 5%;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .menu-btn.active .bar:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .menu-btn.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-btn.active .bar:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .home-icon, .teacher-icon {
+            display: none;
+            color: var(--light-color);
+            font-size: 1.5rem;
+            text-decoration: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .teacher-icon {
+            display: block;
+            margin-left: auto;
+            padding-right: 0;
+        }
+
+        .right-icons {
+            order: 3;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
+            gap: 2.5rem;
         }
+
+        /* Gallery Styles */
         .image-container {
             max-width: 680px;
-            margin: 80px auto 20px;
+            margin: 20px auto;
             padding: 0 16px;
         }
+
         .image-wrapper {
             background: #ffffff;
             border-radius: 8px;
@@ -39,11 +196,13 @@
             margin-bottom: 16px;
             overflow: hidden;
         }
+
         .post-header {
             padding: 12px 16px;
             display: flex;
             align-items: center;
         }
+
         .post-avatar {
             width: 40px;
             height: 40px;
@@ -52,53 +211,42 @@
             background-size: cover;
             margin-right: 12px;
         }
+
         .post-info {
             flex: 1;
         }
+
         .post-username {
             font-weight: 600;
             color: #050505;
             margin-bottom: 4px;
         }
+
         .post-time {
             font-size: 12px;
             color: #65676b;
         }
+
         .post-description {
             padding: 0 16px 12px;
             color: #65676b;
             font-size: 14px;
         }
+
         .image-item {
             width: 100%;
             max-height: 700px;
             object-fit: contain;
             background: #f0f2f5;
         }
-        .post-actions {
-            padding: 12px 16px;
-            border-top: 1px solid #e4e6eb;
-            display: flex;
-            gap: 8px;
-        }
-        .action-button {
-            flex: 1;
-            padding: 6px;
-            text-align: center;
-            border-radius: 4px;
-            color: #65676b;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .action-button:hover {
-            background: #f0f2f5;
-        }
+
         .loading {
             text-align: center;
             padding: 20px;
             font-size: 16px;
             color: #65676b;
         }
+
         .error {
             background: #ffebe9;
             color: #dc2626;
@@ -108,34 +256,112 @@
             margin: 20px auto;
             max-width: 600px;
         }
-        .login-button {
-            display: inline-block;
-            padding: 8px 16px;
-            background-color: #1877f2;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 500;
-            font-size: 14px;
-        }
-        .login-button:hover {
-            background-color: #166fe5;
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.7rem 5%;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .menu-btn {
+                display: block;
+                order: 3;
+                transform: translateY(3.5px);
+            }
+
+            .home-icon {
+                display: block;
+                order: 2;
+            }
+
+            .teacher-icon {
+                order: 1;
+                margin-left: 0;
+                transform: translateY(3px);
+            }
+
+            .logo {
+                display: block;
+                font-size: 1.8rem;
+                letter-spacing: 6px;
+            }
+
+            .department-text {
+                display: block;
+                letter-spacing: 4px;
+            }
+
+            .logo-container {
+                order: unset;
+            }
+
+            .nav-links {
+                order: unset;
+            }
+
+            .right-icons {
+                order: unset;
+                gap: 1.2rem;
+                margin-right: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <h1 style="margin: 0; font-size: 24px; color: #1877f2;">Imgur Gallery</h1>
-            <a href="https://api.imgur.com/oauth2/authorize?client_id=f4f7609452665ab&response_type=code&state=imgur_gallery" class="login-button">Login with Imgur</a>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-links">
+                <a href="monthly_marks.html">Monthly marks</a> <span style="color: #d3d3d3;">/</span>
+                <a href="timetable.html">Timetables</a> <span style="color: #d3d3d3;">/</span>
+                <a href="Groups.html">Groups</a> <span style="color: #d3d3d3;">/</span>
+                <a href="awards.html">Awards</a> <span style="color: #d3d3d3;">/</span>
+                <a href="activities.html">Activities</a> <span style="color: #d3d3d3;">/</span>
+                <a href="about.html">About</a>
+            </div>
+            <div class="logo-container">
+                <a href="index.html" class="logo">EL EKBAL</a>
+                <span class="department-text">BOYS DEPARTMENT</span>
+            </div>
+            <div class="right-icons">
+                <a href="index.html" class="home-icon">
+                    <i class="fas fa-home"></i>
+                </a>
+                <a href="teachers.html" class="teacher-icon fas fa-chalkboard-teacher"></a>
+                <button class="menu-btn">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
         </div>
-    </header>
+        <div class="mobile-menu">
+            <a href="monthly_marks.html">Monthly marks</a>
+            <a href="timetable.html">Timetables</a>
+            <a href="Groups.html">Groups</a>
+            <a href="awards.html">Awards</a>
+            <a href="activities.html">Activities</a>
+            <a href="about.html">About</a>
+        </div>
+    </nav>
 
     <div id="content">
         <div id="image-container" class="image-container"></div>
     </div>
 
     <script>
+        // Mobile menu functionality
+        const menuBtn = document.querySelector('.menu-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Imgur gallery functionality
         const clientId = 'f4f7609452665ab';
         const username = 'ekbalwebsite';
         
