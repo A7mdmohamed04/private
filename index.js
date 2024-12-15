@@ -6,6 +6,33 @@ menuBtn.addEventListener('click', () => {
     mobileMenu.classList.toggle('active');
 });
 
+function getRelativeTime(date) {
+    const now = new Date();
+    const diff = now - date;
+    
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+
+    if (minutes < 1) {
+        return 'Just now';
+    } else if (minutes < 60) {
+        return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
+    } else if (hours < 24) {
+        return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+    } else if (days === 1) {
+        return 'Yesterday';
+    } else if (days < 7) {
+        return `${days} days ago`;
+    } else {
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+        });
+    }
+}
+
 async function fetchImages() {
     const apiUrl = 'https://api.github.com/repos/A7mdmohamed04/private/contents/images';
     
@@ -49,7 +76,7 @@ async function fetchImages() {
                 
                 const time = document.createElement('div');
                 time.className = 'post-time';
-                time.textContent = 'School Activities';
+                time.textContent = getRelativeTime(file.uploadDate);
                 
                 postInfo.appendChild(username);
                 postInfo.appendChild(time);
