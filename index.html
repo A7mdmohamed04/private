@@ -275,6 +275,13 @@
         color: #65676b;
     }
 
+    .post-description {
+        padding: 0 16px 12px;
+        color: var(--fb-dark);
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
     .post-images {
         display: grid;
         gap: 2px;
@@ -582,9 +589,18 @@ async function fetchImages() {
         const filePromises = files.map(async file => {
             const commitResponse = await fetch(`https://api.github.com/repos/A7mdmohamed04/private/commits?path=images/${file.name}&page=1&per_page=1`);
             const commits = await commitResponse.json();
+            const commitMessage = commits[0].commit.message;
+            let description = '';
+            
+            // Extract description from commit message
+            if (commitMessage.includes('Description:')) {
+                description = commitMessage.split('Description:')[1].trim();
+            }
+            
             return {
                 ...file,
-                uploadDate: new Date(commits[0].commit.author.date)
+                uploadDate: new Date(commits[0].commit.author.date),
+                description: description
             };
         });
 
@@ -608,7 +624,8 @@ async function fetchImages() {
                 if (!groupedFiles[timeKey]) {
                     groupedFiles[timeKey] = {
                         date: file.uploadDate,
-                        files: []
+                        files: [],
+                        description: file.description // Store description at group level
                     };
                 }
                 groupedFiles[timeKey].files.push(file);
@@ -643,6 +660,16 @@ async function fetchImages() {
             postHeader.appendChild(avatar);
             postHeader.appendChild(postInfo);
             
+            post.appendChild(postHeader);
+
+            // Add description before images if present
+            if (group.description) {
+                const descriptionDiv = document.createElement('div');
+                descriptionDiv.className = 'post-description';
+                descriptionDiv.textContent = group.description;
+                post.appendChild(descriptionDiv);
+            }
+            
             const imagesContainer = document.createElement('div');
             imagesContainer.className = 'post-images';
             
@@ -666,7 +693,7 @@ async function fetchImages() {
             group.files.forEach(file => {
                 const img = document.createElement('img');
                 img.src = file.download_url;
-                img.alt = file.name;
+                img.alt = file.description || file.name;
                 groupImages.push(file.download_url);
                 
                 img.addEventListener('click', () => {
@@ -676,8 +703,8 @@ async function fetchImages() {
                 imagesContainer.appendChild(img);
             });
             
-            post.appendChild(postHeader);
             post.appendChild(imagesContainer);
+            
             gallery.appendChild(post);
         });
     } catch (error) {
