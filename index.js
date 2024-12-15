@@ -35,61 +35,50 @@ function getRelativeTime(date) {
 
 async function fetchImages() {
     const gallery = document.getElementById('gallery');
-    const apiUrl = 'https://api.github.com/repos/A7mdmohamed04/private/contents/images';
+    const baseUrl = 'https://achievement.ekbal.site/images';
     
     try {
-        const response = await fetch(apiUrl);
-        const files = await response.json();
-        
-        // Get file metadata to sort by upload date
-        const filePromises = files.map(async file => {
-            const commitResponse = await fetch(`https://api.github.com/repos/A7mdmohamed04/private/commits?path=images/${file.name}&page=1&per_page=1`);
-            const commits = await commitResponse.json();
-            const commitMessage = commits[0].commit.message;
-            let description = '';
-            
-            // Extract description from commit message
-            if (commitMessage.includes('Description:')) {
-                description = commitMessage.split('Description:')[1].trim();
+        // Simulated image data since we're using direct URLs
+        const images = [
+            {
+                url: `${baseUrl}/image1.jpg`,
+                uploadDate: new Date('2024-01-15'),
+                description: 'School event highlights'
+            },
+            {
+                url: `${baseUrl}/image2.jpg`, 
+                uploadDate: new Date('2024-01-15'),
+                description: 'School event highlights'
+            },
+            {
+                url: `${baseUrl}/image3.jpg`,
+                uploadDate: new Date('2024-01-14'),
+                description: 'Student achievements'
             }
+            // Add more images as needed
+        ];
+
+        // Group images by upload date
+        const groupedImages = {};
+        images.forEach(image => {
+            const date = new Date(image.uploadDate);
+            date.setSeconds(0, 0);
+            const timeKey = date.getTime();
             
-            return {
-                ...file,
-                uploadDate: new Date(commits[0].commit.author.date),
-                description: description
-            };
+            if (!groupedImages[timeKey]) {
+                groupedImages[timeKey] = {
+                    date: image.uploadDate,
+                    files: [],
+                    description: image.description
+                };
+            }
+            groupedImages[timeKey].files.push(image);
         });
 
-        const filesWithDates = await Promise.all(filePromises);
-        
-        // Remove loading spinner
         gallery.innerHTML = '';
-        
-        // Sort files by upload date, newest first
-        const sortedFiles = filesWithDates.sort((a, b) => b.uploadDate - a.uploadDate);
-        
-        // Group files by upload time (rounded to nearest minute)
-        const groupedFiles = {};
-        sortedFiles.forEach(file => {
-            if (file.type === 'file' && /\.(jpg|jpeg|png|gif)$/i.test(file.name)) {
-                // Round to nearest minute to group files uploaded close together
-                const date = new Date(file.uploadDate);
-                date.setSeconds(0, 0);
-                const timeKey = date.getTime();
-                
-                if (!groupedFiles[timeKey]) {
-                    groupedFiles[timeKey] = {
-                        date: file.uploadDate,
-                        files: [],
-                        description: file.description // Store description at group level
-                    };
-                }
-                groupedFiles[timeKey].files.push(file);
-            }
-        });
 
         // Create posts for each group
-        Object.values(groupedFiles).forEach(group => {
+        Object.values(groupedImages).forEach(group => {
             const post = document.createElement('div');
             post.className = 'post';
             
@@ -118,7 +107,6 @@ async function fetchImages() {
             
             post.appendChild(postHeader);
 
-            // Add description before images if present
             if (group.description) {
                 const descriptionDiv = document.createElement('div');
                 descriptionDiv.className = 'post-description';
@@ -129,7 +117,6 @@ async function fetchImages() {
             const imagesContainer = document.createElement('div');
             imagesContainer.className = 'post-images';
             
-            // Add layout class based on number of images
             const imageCount = group.files.length;
             if (imageCount === 1) {
                 imagesContainer.classList.add('single');
@@ -143,28 +130,26 @@ async function fetchImages() {
                 imagesContainer.classList.add('many');
             }
 
-            // Store the group's images for fullscreen navigation
             const groupImages = [];
             
             group.files.forEach(file => {
                 const img = document.createElement('img');
-                img.src = file.download_url;
-                img.alt = file.description || file.name;
-                groupImages.push(file.download_url);
+                img.src = file.url;
+                img.alt = file.description;
+                groupImages.push(file.url);
                 
                 img.addEventListener('click', () => {
-                    openFullscreen(groupImages, groupImages.indexOf(file.download_url));
+                    openFullscreen(groupImages, groupImages.indexOf(file.url));
                 });
                 
                 imagesContainer.appendChild(img);
             });
             
             post.appendChild(imagesContainer);
-            
             gallery.appendChild(post);
         });
     } catch (error) {
-        console.error('Error fetching images:', error);
+        console.error('Error loading images:', error);
         gallery.innerHTML = '<p>This page is under development right now, please check back later.</p>';
     }
 }
@@ -215,7 +200,6 @@ function navigateImage(direction) {
     const newIndex = currentIndex + direction;
     if (newIndex >= 0 && newIndex < currentImages.length) {
         if (window.innerWidth <= 768) {
-        
             fullscreenImg.classList.add(direction > 0 ? 'slide-left' : 'slide-right');
             
             setTimeout(() => {
