@@ -289,6 +289,12 @@
         align-items: center;
     }
 
+    @media (min-width: 769px) {
+        .fullscreen-overlay.active {
+            top: 77px; /* Make it full height on desktop */
+        }
+    }
+
     .fullscreen-image {
         max-width: 100%;
         max-height: calc(100vh - 80px);
