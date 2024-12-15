@@ -194,6 +194,47 @@
         padding: 20px;
     }
 
+    /* Loading animation */
+    .loading {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 300px;
+    }
+
+    .loading-spinner {
+        width: 80px;
+        height: 80px;
+        border: 8px solid var(--fb-grey);
+        border-top: 8px solid var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+    }
+
+    .loading-text {
+        font-size: 24px;
+        color: var(--primary-color);
+    }
+
+    .loading-text::after {
+        content: "Loading";
+        animation: dots 1.5s infinite;
+    }
+
+    @keyframes dots {
+        0% { content: "Loading"; }
+        33% { content: "Loading."; }
+        66% { content: "Loading.."; }
+        100% { content: "Loading..."; }
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
     .post {
         background: var(--fb-white);
         border-radius: 8px;
@@ -475,7 +516,12 @@
         </div>
     </nav>
 
-    <div id="gallery"></div>
+    <div id="gallery">
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            <div class="loading-text"></div>
+        </div>
+    </div>
     <div class="fullscreen-overlay">
         <div class="side-rectangle">
             <div class="close-btn"><i class="fas fa-times"></i></div>
@@ -523,12 +569,12 @@ function getRelativeTime(date) {
 }
 
 async function fetchImages() {
+    const gallery = document.getElementById('gallery');
     const apiUrl = 'https://api.github.com/repos/A7mdmohamed04/private/contents/images';
     
     try {
         const response = await fetch(apiUrl);
         const files = await response.json();
-        const gallery = document.getElementById('gallery');
         
         // Get file metadata to sort by upload date
         const filePromises = files.map(async file => {
@@ -541,6 +587,9 @@ async function fetchImages() {
         });
 
         const filesWithDates = await Promise.all(filePromises);
+        
+        // Remove loading spinner
+        gallery.innerHTML = '';
         
         // Sort files by upload date, newest first
         const sortedFiles = filesWithDates.sort((a, b) => b.uploadDate - a.uploadDate);
@@ -631,6 +680,7 @@ async function fetchImages() {
         });
     } catch (error) {
         console.error('Error fetching images:', error);
+        gallery.innerHTML = '<p>Error loading images. Please try again later.</p>';
     }
 }
 
