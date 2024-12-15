@@ -293,19 +293,24 @@
         max-width: 100%;
         max-height: calc(100vh - 80px);
         object-fit: contain;
-        transition: transform 0.3s ease-out;
     }
 
-    .fullscreen-image.slide-left {
-        transform: translateX(-100%);
-    }
+    @media (max-width: 768px) {
+        .fullscreen-image {
+            transition: transform 0.3s ease-out;
+        }
 
-    .fullscreen-image.slide-right {
-        transform: translateX(100%);
-    }
+        .fullscreen-image.slide-left {
+            transform: translateX(-100%);
+        }
 
-    .fullscreen-image.slide-reset {
-        transform: translateX(0);
+        .fullscreen-image.slide-right {
+            transform: translateX(100%);
+        }
+
+        .fullscreen-image.slide-reset {
+            transform: translateX(0);
+        }
     }
 
     .close-btn {
@@ -640,21 +645,25 @@ closeBtn.addEventListener('click', closeFullscreen);
 function navigateImage(direction) {
     const newIndex = currentIndex + direction;
     if (newIndex >= 0 && newIndex < currentImages.length) {
-        // Add animation class based on direction
-        fullscreenImg.classList.add(direction > 0 ? 'slide-left' : 'slide-right');
-        
-        // After animation completes, update image and reset animation
-        setTimeout(() => {
+        if (window.innerWidth <= 768) {
+            // Only add animation on mobile
+            fullscreenImg.classList.add(direction > 0 ? 'slide-left' : 'slide-right');
+            
+            setTimeout(() => {
+                currentIndex = newIndex;
+                showCurrentImage();
+                fullscreenImg.classList.remove('slide-left', 'slide-right');
+                fullscreenImg.classList.add('slide-reset');
+                
+                setTimeout(() => {
+                    fullscreenImg.classList.remove('slide-reset');
+                }, 300);
+            }, 300);
+        } else {
+            // Instant change on desktop
             currentIndex = newIndex;
             showCurrentImage();
-            fullscreenImg.classList.remove('slide-left', 'slide-right');
-            fullscreenImg.classList.add('slide-reset');
-            
-            // Remove reset class after transition
-            setTimeout(() => {
-                fullscreenImg.classList.remove('slide-reset');
-            }, 300);
-        }, 300);
+        }
     }
 }
 
