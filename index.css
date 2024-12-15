@@ -1,0 +1,285 @@
+  /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Oswald;
+        }
+
+        /* Custom Fonts */
+      
+        :root {
+            --primary-color: #003470;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #fff;
+            --dark-color: #003470;
+            --fb-blue: #1877f2;
+            --fb-grey: #f0f2f5;
+            --fb-dark: #1c1e21;
+            --fb-white: #ffffff;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        body {
+            font-family: 'Oswald', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-color: var(--fb-grey);
+            padding-top: 80px; /* Add padding to account for fixed navbar */
+        }
+
+        .navbar {
+            padding: 1.6rem 5%;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: 0.3s;
+            background: var(--primary-color);
+            font-family: 'Oswald', sans-serif;
+            top: 0; /* Fix navbar to top */
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .logo {
+            color: var(--light-color);
+            font-size: 2rem;
+            font-weight: 700;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 2px;
+            font-size: 0;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            order: 2;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .department-text {
+            color: #808080;
+            font-size: 0.8rem;
+            margin-top: -5px;
+            margin-left: 0px;
+            display: none;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            margin-right: 3rem;
+            order: 1;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .nav-links a {
+            color: var(--light-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-family: Oswald;
+        }
+
+        .menu-btn {
+            display: none;
+            color: var(--light-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-btn .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--light-color);
+            transition: 0.3s;
+        }
+
+        .mobile-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--primary-color);
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-menu.active {
+            max-height: 300px;
+            padding: 1rem 0;
+        }
+
+        .mobile-menu a {
+            display: block;
+            color: var(--light-color);
+            text-decoration: none;
+            padding: 0.5rem 5%;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .menu-btn.active .bar:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .menu-btn.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-btn.active .bar:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .home-icon, .teacher-icon {
+            display: none;
+            color: var(--light-color);
+            font-size: 1.5rem;
+            text-decoration: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .teacher-icon {
+            display: block;
+            margin-left: auto;
+            padding-right: 0;
+        }
+
+        .right-icons {
+            order: 3;
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        #gallery {
+            max-width: 680px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .post {
+            background: var(--fb-white);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .post-header {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-image: url('https://i.imgur.com/1aYDbH1.png');
+            background-size: cover;
+            margin-right: 12px;
+        }
+
+        .post-info {
+            flex: 1;
+        }
+
+        .post-username {
+            font-weight: 600;
+            color: var(--fb-dark);
+            margin-bottom: 4px;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #65676b;
+        }
+
+        .post img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.7rem 5%;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .menu-btn {
+                display: block;
+                order: 3;
+                transform: translateY(3.5px);
+            }
+
+            .home-icon {
+                display: block;
+                order: 2;
+            }
+
+            .teacher-icon {
+                order: 1;
+                margin-left: 0;
+                transform: translateY(3px);
+            }
+
+            .logo {
+                display: block;
+                font-size: 1.8rem;
+                letter-spacing: 6px;
+            }
+
+            .department-text {
+                display: block;
+                letter-spacing: 4px;
+            }
+
+            .logo-container {
+                order: unset;
+            }
+
+            .nav-links {
+                order: unset;
+            }
+
+            .right-icons {
+                order: unset;
+                gap: 1.2rem;
+                margin-right: 10px;
+            }
+
+            #gallery {
+                padding: 10px;
+            }
+        }
+   
