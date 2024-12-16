@@ -35,28 +35,27 @@ function getRelativeTime(date) {
 
 async function fetchImages() {
     const gallery = document.getElementById('gallery');
-    const baseUrl = 'https://achievement.ekbal.site/images';
+    const baseUrl = 'https://api.github.com/repos/A7mdmohamed04/private/contents/images';
+    const token = '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';
     
     try {
-        // Simulated image data since we're using direct URLs
-        const images = [
-            {
-                url: `${baseUrl}/image1.jpg`,
-                uploadDate: new Date('2024-01-15'),
-                description: 'School event highlights'
-            },
-            {
-                url: `${baseUrl}/image2.jpg`, 
-                uploadDate: new Date('2024-01-15'),
-                description: 'School event highlights'
-            },
-            {
-                url: `${baseUrl}/image3.jpg`,
-                uploadDate: new Date('2024-01-14'),
-                description: 'Student achievements'
+        const response = await fetch(baseUrl, {
+            headers: {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json'
             }
-            // Add more images as needed
-        ];
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch images');
+        }
+
+        const data = await response.json();
+        const images = data.map(file => ({
+            url: file.download_url,
+            uploadDate: new Date(file.created_at || Date.now()),
+            description: file.name.split('.')[0].replace(/_/g, ' ')
+        }));
 
         // Group images by upload date
         const groupedImages = {};
